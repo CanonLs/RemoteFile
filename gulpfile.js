@@ -8,7 +8,7 @@ var gulp            = require('gulp');
         sass:	'develop/css/style/*.scss',
         js: 	'develop/js/*.js',
         images: 'develop/images/**/*.{png,jpg,gif,ico}',
-        html: 	@html1@,
+        html: 	@html@,
         all:    'develop/**/*',
         devCss:	'develop/css/*.css',
         outCss: 'develop/css'
@@ -43,15 +43,7 @@ gulp.task('imgLoad', () => {
     ScanFn.init();
 });
 gulp.task('default',['css'], function () {
-    bs.init({
-        server: './develop',
-        index: @html2@,
-        port: '8222',
-        open: 'external',
-        ui: {
-            port: 8223,
-        }
-    })
+    @server@
 });
 
 var ScanFn = (function(){
