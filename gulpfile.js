@@ -153,7 +153,7 @@ function forDirs(dirs,doneCallback) {
         watchDir.push(path);
         forDir(path,watchDir,function(processedDirPath,subFiles){
             allFiles=allFiles.concat(subFiles);
-            console.log(processedDirPath+' 处理完成',);
+            console.log(processedDirPath+' 处理完成');
             watchDir.splice(watchDir.indexOf(processedDirPath),1);
             if(watchDir.length==0){
                 doneCallback(allFiles);
