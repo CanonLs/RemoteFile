@@ -14,7 +14,7 @@ var gulp            = require('gulp');
         css: 	'develop/css/style/**',
         sass:	'develop/css/style/*.scss',
         js: 	'develop/js/*.js',
-        images: 'develop/images/**/*.{png,jpg,gif,ico}',
+        images: 'develop/images/**',
         html: 	@html1@,
         all:    'develop/**/*',
         devCss:	'develop/css/*.css',
