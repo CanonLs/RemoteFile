@@ -1,5 +1,5 @@
 {
-  "name": "gulp",
+  "name": "Simple workflow",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
