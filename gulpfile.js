@@ -284,7 +284,7 @@ gulp.task('moveImg', () => {
         .pipe(plumber())
         .pipe(gulp.dest(outPath.images));
 });
-gulp.task('reg', function(){
+gulp.task('reg', ['html'],function(){
     ScanFn.reg();
 });
 gulp.task('clean', () => {
@@ -297,7 +297,7 @@ gulp.task('zip', ['clean', 'js', 'nanoCss', 'html', 'moveImg'], () => {
             .pipe(zip('project.zip'))
             .pipe(gulp.dest(outPath.root));
     });
-gulp.task('build', ['clean', 'reg', 'js', 'nanoCss', 'html', 'moveImg', 'zip'], function () {
+gulp.task('build', ['clean', 'js', 'nanoCss', 'reg', 'moveImg', 'zip'], function () {
         console.log("编译打包ending.......");
         process.exit();
 });
