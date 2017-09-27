@@ -4,13 +4,14 @@ var gulp            = require('gulp');
     sass 		    = require('gulp-sass'),
     uglify          = require('gulp-uglify'),
     cleanCSS        = require('gulp-clean-css'),
+    changed 	    = require('gulp-changed'),        
     zip             = require('gulp-zip'),
     concat 		    = require('gulp-concat'),
     htmlmin 	    = require('gulp-htmlmin'),
     plumber         = require('gulp-plumber'),
     del             = require('del'),
     path = {
-        css: 	'develop/css/style/*.css',
+        css: 	'develop/css/style/**',
         sass:	'develop/css/style/*.scss',
         js: 	'develop/js/*.js',
         images: 'develop/images/**/*.{png,jpg,gif,ico}',
@@ -37,7 +38,7 @@ var gulp            = require('gulp');
     };
 
 gulp.watch([path.images],['imgLoad']);
-gulp.watch([path.css,path.sass],['css']);
+gulp.watch([path.css],['css']);
 gulp.watch([path.html,path.js], ['reload']);
 
 
@@ -48,6 +49,7 @@ function errrHandler(e) {
 gulp.task('css',() => {
 return gulp
     .src(path.css)
+    .pipe(changed(path.outCss))    
     .pipe(plumber({errorHandler: errrHandler }))
     .pipe(sass())
     .pipe(autoprefixer({
@@ -56,7 +58,6 @@ return gulp
     }))
     .pipe(gulp.dest(path.outCss))			
     .pipe(bs.stream());
-    
 });
 gulp.task('reload', () => {
 bs.reload();
