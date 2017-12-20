@@ -1,25 +1,28 @@
-var gulp = require('gulp'),
-	autoprefixer = require('gulp-autoprefixer'),
-	bs = require('browser-sync'),
-	sass = require('gulp-sass'),
-	uglify = require('gulp-uglify'),
-	cleanCSS = require('gulp-clean-css'),
-	changed = require('gulp-changed'),
-	zip = require('gulp-zip'),
-	concat = require('gulp-concat'),
-	htmlmin = require('gulp-htmlmin'),
-	plumber = require('gulp-plumber'),
-	del = require('del'),
-	watch = require('gulp-watch'),
+var gulp 			= require('gulp'),
+	autoprefixer 	= require('gulp-autoprefixer'),
+	bs 				= require('browser-sync'),
+	sass 			= require('gulp-sass'),
+	uglify 			= require('gulp-uglify'),
+	cleanCSS 		= require('gulp-clean-css'),
+	changed 		= require('gulp-changed'),
+	zip 			= require('gulp-zip'),
+	concat 			= require('gulp-concat'),
+	htmlmin 		= require('gulp-htmlmin'),
+	plumber 		= require('gulp-plumber'),
+	del 			= require('del'),
+	watch 			= require('gulp-watch'),
+	babel			= require('gulp-babel'),
 	path = {
 		css: 'develop/css/style/**',
 		sass: 'develop/css/style/*.scss',
 		js: 'develop/js/*.js',
+		es6_js:'develop/js/es6/*.js',
 		images: 'develop/images/**/**',
 		html: 'develop/*.html',
 		all: 'develop/**/*',
 		devCss: 'develop/css/*.css',
-		outCss: 'develop/css'
+		outCss: 'develop/css',
+		outJs:'develop/js'
 	},
 	inPath = {
 		css: 'develop/css/*.css',
@@ -61,9 +64,22 @@ gulp.task('css', () => {
 	})
 });
 gulp.task('reload', () => {
-	watch([path.html, path.js], function () {
+	watch([path.html], function () {
 		bs.reload();
-		console.log("更改js/html，刷新页面")
+		console.log("更改html，刷新页面")
+	})
+});
+gulp.task('es6', () => {
+	watch([path.es6_js], function () {
+		gulp.src(path.es6_js)
+			.pipe(plumber({
+				errorHandler: errrHandler
+			}))
+			.pipe(babel())
+			.pipe(concat('main.js'))
+			.pipe(gulp.dest(path.outJs))
+		bs.reload();
+		console.log("更改js，刷新页面");
 	})
 });
 
@@ -81,7 +97,7 @@ gulp.task('imgLoad', () => {
 			console.log('删除了 ' + file);
 		});
 });
-gulp.task('default', ['css', 'imgLoad', 'reload'], function () {
+gulp.task('default', ['css', 'imgLoad', 'reload','es6'], function () {
 	bs.init({
 
 		server: "./develop",
