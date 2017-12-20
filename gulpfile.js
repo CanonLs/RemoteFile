@@ -1,16 +1,16 @@
-var gulp 			= require('gulp'),
-	autoprefixer 	= require('gulp-autoprefixer'),
-	bs 				= require('browser-sync'),
-	sass 			= require('gulp-sass'),
-	uglify 			= require('gulp-uglify'),
-	cleanCSS 		= require('gulp-clean-css'),
-	changed 		= require('gulp-changed'),
-	zip 			= require('gulp-zip'),
-	concat 			= require('gulp-concat'),
-	htmlmin 		= require('gulp-htmlmin'),
-	plumber 		= require('gulp-plumber'),
-	del 			= require('del'),
-	watch 			= require('gulp-watch'),
+var gulp = require('gulp'),
+	autoprefixer = require('gulp-autoprefixer'),
+	bs = require('browser-sync'),
+	sass = require('gulp-sass'),
+	uglify = require('gulp-uglify'),
+	cleanCSS = require('gulp-clean-css'),
+	changed = require('gulp-changed'),
+	zip = require('gulp-zip'),
+	concat = require('gulp-concat'),
+	htmlmin = require('gulp-htmlmin'),
+	plumber = require('gulp-plumber'),
+	del = require('del'),
+	watch = require('gulp-watch'),
 	path = {
 		css: 'develop/css/style/**',
 		sass: 'develop/css/style/*.scss',
@@ -161,7 +161,7 @@ var ScanFn = (function () {
 						resfile.shift();
 						resfile = resfile.join('/');
 						subFiles.push(resfile);
-						outJS.push("    {src:'" + resfile + "', id:''}");
+						outJS.push(result.file);
 					}
 				}
 			}, function (processedDirPath) {
@@ -199,6 +199,15 @@ var ScanFn = (function () {
 				console.log("写入成功");
 			}
 		});
+	}
+
+	function sortFileNames(files) {
+		var collator = new Intl.Collator(undefined, {
+			numeric: true,
+			sensitivity: 'base'
+		});
+		files.sort(collator.compare);
+		return files;
 	}
 
 	function regHtml(file) {
@@ -241,20 +250,24 @@ var ScanFn = (function () {
 						if (err) {
 							return console.error(err);
 						}
-						wf(fileInfo.b);
+						// wf(fileInfo.b);
 						forDirs(sinPath, function (fileList) {
+							outJS = sortFileNames(outJS);
 							console.log('所有目录遍历完成,获取到文件个数为:' + fileList.length);
-							wf(outJS.join(",\n") + "\n" + fileInfo.e);
+							// wf(outJS.join(",\n") + "\n" + fileInfo.e);
+							wf(fileInfo.b + "\n" + "	{src:'" + outJS.join("', id:''},\n	{src:'") + "', id:''},\n" + fileInfo.e);
 						});
 					});
 				} else {
-					wf(fileInfo.b);
+					// wf(fileInfo.b);
 					forDirs(sinPath, function (fileList) {
+						outJS = sortFileNames(outJS);
 						console.log('所有目录遍历完成,获取到文件个数为:' + fileList.length);
-						wf(outJS.join(",\n") + "\n" + fileInfo.e);
+						wf(fileInfo.b + "\n" + "	{src:'" + outJS.join("', id:''},\n	{src:'") + "', id:''},\n" + fileInfo.e);
 					});
 				}
 			});
+
 		},
 
 		reg: function (fn) {
