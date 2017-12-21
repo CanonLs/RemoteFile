@@ -177,7 +177,7 @@ var ScanFn = (function () {
 						resfile.shift();
 						resfile = resfile.join('/');
 						subFiles.push(resfile);
-						outJS.push(result.file);
+						outJS.push("    {src:'" + resfile + "', id:''}");
 					}
 				}
 			}, function (processedDirPath) {
@@ -216,7 +216,6 @@ var ScanFn = (function () {
 			}
 		});
 	}
-
 	function sortFileNames(files) {
 		var collator = new Intl.Collator(undefined, {
 			numeric: true,
