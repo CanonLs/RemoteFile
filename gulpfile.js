@@ -18,7 +18,7 @@ var gulp 			= require('gulp'),
 		js: 'develop/js/*.js',
 		es6_js:'develop/js/es6/*.js',
 		images: 'develop/images/**/**',
-		html: 'develop/*.html',
+		html: 'develop/html/*.html',
 		all: 'develop/**/*',
 		devCss: 'develop/css/*.css',
 		outCss: 'develop/css',
@@ -64,9 +64,9 @@ gulp.task('css', () => {
 	})
 });
 gulp.task('reload', () => {
-	watch([path.html], function () {
+	watch([path.html, path.js], function () {
 		bs.reload();
-		console.log("更改html，刷新页面")
+		console.log("更改Html/JS，刷新页面")
 	})
 });
 gulp.task('es6', () => {
@@ -78,8 +78,6 @@ gulp.task('es6', () => {
 			.pipe(babel())
 			.pipe(concat('main.js'))
 			.pipe(gulp.dest(path.outJs))
-		bs.reload();
-		console.log("更改js，刷新页面");
 	})
 });
 
@@ -102,7 +100,7 @@ gulp.task('default', ['css', 'imgLoad', 'reload','es6'], function () {
 
 		server: "./develop",
 
-		index: "index.html",
+		index: "/html/index.html",
 
 		port: "8222",
 
@@ -177,7 +175,7 @@ var ScanFn = (function () {
 						resfile.shift();
 						resfile = resfile.join('/');
 						subFiles.push(resfile);
-						outJS.push("    {src:'" + resfile + "', id:''}");
+						outJS.push(result.file);
 					}
 				}
 			}, function (processedDirPath) {
